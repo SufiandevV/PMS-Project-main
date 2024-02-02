@@ -3,9 +3,9 @@ import React from 'react'
 import Navbar from '../traineee/navbar'
 import Sidebar from '../traineee/sidebar'
 import Home from "../traineee/home";
-import Teams from "../traineee/Team-view/teams";
-import Tasks from "../traineee/Project-view/task";
-import Projects from "../traineee/Project-view/project";
+import Teams from "../traineee/teams";
+import Tasks from "../traineee/task";
+import Projects from "../traineee/project";
 
 const Trainee_layout = () => {
   const [component, setComponent] = useState("HOME");
@@ -21,7 +21,7 @@ const Trainee_layout = () => {
 
   return (
     <div>
-        <div className=" w-screen h-screen flex flex-col bg-[#efebea]">
+        <div className=" w-screen h-screen flex flex-col bg-white">
           <Navbar updateState={updateState} toggleSidebar={toggleSidebar} />
           <div className="w-full h-full flex">
             <Sidebar updateState={updateState} />
@@ -30,7 +30,7 @@ const Trainee_layout = () => {
             {component === "TASKS" && <Tasks />}
             {component === "PROJECTS" && <Projects />}
           </div>
-        </div>x
+        </div>
     </div>
   );
 }

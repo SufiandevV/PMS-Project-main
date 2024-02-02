@@ -96,34 +96,34 @@ function Request() {
 
   return (
     <>
-        <div className="w-full h-full p-4 pt-12 bg-opacity-50 bg-indigo-200">
+        <div className="w-full h-full p-4 pt-8 bg-white">
           
         
             <div className="h-full w-full flex ">
                 <div className="w-full">
-                    <nav className="text-purple-700 w-full p-4  dark:text-purple-700">
-                        <ol className="text-purple-700 mt-6 flex h-8 space-x-2 dark:text-purple-700">
+                    <nav className="text-purple-700 w-full ml-4 dark:text-blue-700">
+                        <ol className="text-purple-700 flex h-8 space-x-2 dark:text-blue-700">
                             <li className="text-purple-700 flex items-center">
-                                <a rel="noopener noreferrer" href="#" title="Back to homepage" className="text-purple-700 text-sm hover:text-black flex items-center hover:underline">Instructor</a>
+                                <a rel="noopener noreferrer" href="#" title="Back to homepage" className="text-blue-700 text-sm hover:text-black flex items-center hover:underline">Instructor</a>
                             </li>
                             <li className="flex items-center space-x-1">
                                 <span className="dark:text-gray-400">/</span>
-                                <a rel="noopener noreferrer" href="#" className="text-purple-700 text-sm hover:text-black flex items-center px-1 capitalize hover:underline">Requests</a>
+                                <a rel="noopener noreferrer" href="#" className="text-blue-700 text-sm hover:text-black flex items-center px-1 capitalize hover:underline">Requests</a>
                             </li>
                         </ol>
                         <h3 className="font-bold text-3xl ">Requests</h3>
 
                     </nav>
                     <div className="container p-2 mx-auto sm:p-4 text-black ">
-                        <h2 className="mb-4 text-2xl font-semibold leadi text-purple-500">Request List</h2>
+                        <h2 className="mb-4 text-2xl font-semibold text-blue-700">Request List</h2>
                         {Requests.length === 0 ? (
-                                <p className="text-lg font-semibold text-purple-700">No requests to approve</p>
+                                <p className="text-lg font-semibold text-blue-700">No requests to approve</p>
                             ) : (
                         <div className="overflow-x-auto w-full bg-white ">
                             <table className="w-full text-sm border-collapse">
-                                <thead className="bg-yellow-200">
-                                    <tr className="text-left">
-                                        <th className="p-3 border border-gray-300">Name</th>
+                                <thead className="bg-blue-700">
+                                    <tr className="text-left text-white">
+                                        <th className="p-3 border border-gray-300 ">Name</th>
                                         <th className="p-3 border border-gray-300">Email</th>
                                         <th className="p-3 border border-gray-300">Cohort</th>
                                         <th className="p-3 border border-gray-300">Stack</th>
@@ -151,12 +151,12 @@ function Request() {
 
                                             <td className="p-3 border border-gray-300">
 
-                                                <span className="px-3 py-2 text-white rounded-md bg-indigo-500 cursor-pointer"
+                                                <span className="px-3 py-2 text-white rounded-md bg-blue-700 cursor-pointer"
                                                 onClick={() => approveRequest(Request.userId)}>
                                                     <span>Approve</span>
 
                                                 </span>  <span
-                                                    className="px-3 py-2 text-white rounded-md bg-red-500 cursor-pointer"
+                                                    className="px-3 py-2 text-white rounded-md bg-red-700 cursor-pointer"
                                                     onClick={() => handleBlockClick(Request.userId)} // Pass the Request object here
                                                 >
                                                     <span>Block</span>
@@ -171,14 +171,14 @@ function Request() {
         <button
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-4 py-2 mr-2 font-semibold text-white bg-indigo-500 rounded-md"
+          className="px-4 py-2 mr-2 font-semibold text-white bg-blue-700 rounded-md"
         >
            Prev
         </button>
         <button
           onClick={() => paginate(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 font-semibold text-white bg-indigo-500 rounded-md"
+          className="px-4 py-2 font-semibold text-white bg-blue-700 rounded-md"
         >
           Next 
         </button>

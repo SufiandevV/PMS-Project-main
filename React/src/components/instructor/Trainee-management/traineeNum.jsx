@@ -40,15 +40,13 @@ const TraineeNum = () => {
 
   return (
     <>
-    <div className="w-full lg:w-1/5 p-4 mx-auto my-6 bg-indigo-200 rounded-lg shadow-md">
+    <div className="ml-4 w-1/4 p-4 mx-auto my-6 bg-white border border-blue-300 border-2 rounded-lg shadow-md mr-10">
       <div className="text-center">
       <div className='flex'>
-      <UsersIcon className='text-purple-700' style={{ width: '40px', height: '40px' }} />
-        <h2 className="text-3xl font-semibold text-purple-500 mb-4">Trainee List</h2>
+      <UsersIcon className='text-blue-700 ml-6' style={{ width: '40px', height: '40px' }} />
+        <h2 className="text-3xl font-semibold text-blue-700 mb-4">Trainees</h2>
         </div>
-        <div className="bg-white p-6 rounded-lg">
-          {/* Set the size of the icon here */}
-          {/* Rest of your content */}
+        <div className="bg-blue-200 p-6 rounded-lg"> 
           <p className="text-lg font-medium text-gray-800">Total Trainees: {totalTrainees}</p>
         </div>
       </div>

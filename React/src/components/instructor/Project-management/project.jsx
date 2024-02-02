@@ -163,12 +163,12 @@ const Projects = () => {
 
   return (
     <>
-        <div className="w-full h-full p-4 pt-12 bg-opacity-50 bg-indigo-200">
+        <div className="w-full h-full p-4 pt-8 bg-white">
             {/* Create Project Modal */}
             {isModalOpen && (
                 <div className="modal-container  flex items-center justify-center z-100">
                     {/* ... (your existing modal code) */}
-                    <div className="flex flex-col gap-2 p-6 rounded-md shadow-md bg-white opacity-100 text-black">
+                    <div className="flex flex-col  gap-2 p-6 rounded-md shadow-md bg-white opacity-100 text-black">
                         <h2 className="text-xl font-semibold leading tracking">Add Project</h2>
                         <div className="mt-4">
                             {/* ... (your existing modal form fields) */}
@@ -305,40 +305,24 @@ const Projects = () => {
             )}
             <div className={`h-full w-full flex ${contentClassName}`}>
                 <div className="w-full">
-                    <nav className="text-purple-700 w-full p-4  dark:text-purple-700">
-                        <ol className="text-purple-700 mt-6 flex h-8 space-x-2 dark:text-purple-700">
-                            <li className="text-purple-700 flex items-center">
-                                <a rel="noopener noreferrer" href="#" className="text-purple-700 text-sm hover:text-black flex items-center hover:underline">Instructor</a>
+                    <nav className="text-blue-700 w-full ml-4 dark:text-blue-700">
+                        <ol className="text-blue-700 flex h-8 space-x-2 dark:text-blue-700">
+                            <li className="text-blue-700 flex items-center">
+                                <a rel="noopener noreferrer" href="#" className="text-blue-700 text-sm hover:text-black flex items-center hover:underline">Instructor</a>
                             </li>
                             <li className="flex items-center space-x-1">
                                 <span className="dark:text-gray-400">/</span>
-                                <a rel="noopener noreferrer" href="#" className="text-purple-700 text-sm hover:text-black flex items-center px-1 capitalize hover:underline">Trainees</a>
+                                <a rel="noopener noreferrer" href="#" className="text-blue-700 text-sm hover:text-black flex items-center px-1 capitalize hover:underline">Trainees</a>
                             </li>
                         </ol>
                         <h3 className="font-bold text-3xl ">Trainees Projects</h3>
 
                     </nav>
                     <div className="container p-2 mx-auto sm:p-4 text-black ">
-                        <h2 className="mb-4 text-2xl font-semibold leadi text-purple-500">Project List</h2>
-                       <div>
-                        {/* Add Project button */}
-                            <button
-                                className="px-6 py-2 rounded-sm shadow-sm bg-purple-700 text-white mb-4 hover:bg-purple-800"
-                                onClick={() => {
-                                    setCreateData({
-                                        projectTitle: '',
-                                        description: '',
-                                    });
-                                    setModalOpen(true);
-                                    setDimmed(true);
-                                }}
-                            >
-                                Add Project
-                            </button>
-                            </div>
-                        <div className="overflow-x-auto w-full bg-white ">
+                        <h2 className="mb-4 text-2xl font-semibold leadi text-blue-700">Project List</h2>
+                         <div className="overflow-x-auto w-full bg-white ">
                             <table className="w-full text-sm border-collapse">
-                                <thead className="bg-purple-700 text-white">
+                                <thead className="bg-blue-700 text-white">
                                     <tr className="text-left">
                                         <th className="p-3 border border-gray-300">Project Id</th>
                                         <th className="p-3 border border-gray-300">Project Name</th>
@@ -365,7 +349,7 @@ const Projects = () => {
                                             </td>
 
                                             <td className="p-2" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                <span className="px-5 py-2 text-white rounded-md bg-purple-700 cursor-pointer hover:bg-purple-900" onClick={() => handleEditClick(Projects)}>
+                                                <span className="px-5 py-2 text-white rounded-md bg-blue-700 cursor-pointer hover:bg-blue-900" onClick={() => handleEditClick(Projects)}>
                                                     <span>Edit</span>
                                                 </span>
                                                 </td>
@@ -374,6 +358,22 @@ const Projects = () => {
 
                                 </tbody>
                             </table>
+                            <div className='flex justify-center mt-10'>
+                        {/* Add Project button */}
+                            <button
+                                className="px-6 py-2 rounded-sm shadow-sm bg-blue-700 text-white mb-4 hover:bg-blue-800"
+                                onClick={() => {
+                                    setCreateData({
+                                        projectTitle: '',
+                                        description: '',
+                                    });
+                                    setModalOpen(true);
+                                    setDimmed(true);
+                                }}
+                            >
+                                Add Project
+                            </button>
+                            </div>
 
                         </div>
                     </div>

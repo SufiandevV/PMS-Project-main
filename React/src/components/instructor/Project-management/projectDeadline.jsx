@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+
 import Cookie from "universal-cookie";
 
 const ProjectDeadline = () => {
@@ -55,12 +57,12 @@ const ProjectDeadline = () => {
 
   return (
     <div className='flex space-x-2'>
-      <div className="w-3/5  text-black">
-        <table className="w-full h-full text-sm border-collapse bg-white overflow-y-auto">
-          <thead className="bg-purple-700 text-white">
+      <div className="w-full  text-black mr-10">
+        <table className="w-full h-2/4 text-sm border-collapse bg-white overflow-y-auto">
+          <thead className="bg-blue-600 text-white">
             <tr className="text-left">
-              <th className="p-3 border border-gray-300">Project Name</th>
-              <th className="p-3 border border-gray-300">Project Deadline</th>
+              <th className="p-3 border border-gray-300 text-left">Project Name</th>
+              <th className="p-3 border border-gray-300 text-left">Project Deadline</th>
             </tr>
           </thead>
           <tbody>
@@ -80,24 +82,20 @@ const ProjectDeadline = () => {
           <button
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
-            className="mr-2 px-3 py-1 bg-purple-700 text-white rounded"
+            className="mr-2 px-3 py-1 bg-blue-600 text-white rounded"
           >
             Prev
           </button>
           <button
             onClick={() => paginate(currentPage + 1)}
             disabled={indexOfLastProject >= Projects.length}
-            className="px-3 py-1 bg-purple-700 text-white rounded"
+            className="px-3 py-1 bg-blue-600 text-white rounded"
           >
             Next
           </button>
         </div>
       </div>
-      <div className="w-2/5 ">
-        <div className="h-full text-black text-sm border-collapse bg-white">
-          <Calendar />
-        </div>
-      </div>
+      
     </div>
   );
 }

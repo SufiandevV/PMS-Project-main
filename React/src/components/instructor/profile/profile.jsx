@@ -1,172 +1,248 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Cookie from "universal-cookie";
+import Select from 'react-select';
 
+function Profile({ updateState, showNotification,instructorId }) {
+    // console.log("profile here updateState   ", updateState, "shownotification", showNotification, "instructorId", instructorId)
 
+   
+    const STACK = [
+        {
+            value: 'MERN',
+            label: 'MERN',
+        },
+        {
+            value: 'Python & Django',
+            label: 'Python & Django',
+        },
+        {
+            value: 'Data Science',
+            label: 'Data Science',
+        },
+    ];
 
+    const COHORT = [
+        {
+            value: 'Cohort-1',
+            label: 'Cohort-1',
+        },
+        {
+            value: 'Cohort-2',
+            label: 'Cohort-2',
+        },
+        {
+            value: 'Cohort-3',
+            label: 'Cohort-3',
+        },
+        {
+            value: 'Cohort-4',
+            label: 'Cohort-4',
+        },
+    ];
 
-const Profile = () => {
-    const cookie = new Cookie();
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState({});
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        role: '',
+        cohort: '', // Initialize cohort as null if it's a Select component
+        stack: '', // Initialize stack as null if it's a Select component
+    });
+    const [isUpdating, setIsUpdating] = useState(false);
 
-
-    const [currentProfile, setCurrentProfile] = useState(null);
-    const handleEditClick = (Profile) => {
-        setCurrentProfile(Profile);
-        setEditData(Profile);
-        setEditModalOpen(true);
-        setDimmed(true); 
-    };
-
-    
-
-    const getUserIdFromCookie = () => {
-        const authCookie = cookie.get('auth');
-        if (authCookie && authCookie.userId) {
-          return authCookie.userId;
-        }
-        return null;
-      };
-
-
-
-    const [Profiles, setProfiles] = useState([]);
-
-    const update = async (updatedData) => {
+    const getUserById = async () => {
         try {
-
-            const { data } = await axios.put("http://localhost:3000/user/updateUser", updatedData);
-            console.log(data); 
-
-            // Update the Profiles state with the updated data
-            setProfiles(prevProfiles => {
-                const updatedIndex = prevProfiles.findIndex(Profile => Profile.email === updatedData.email);
-                if (updatedIndex !== -1) {
-                    const updatedProfiles = [...prevProfiles];
-                    updatedProfiles[updatedIndex] = updatedData;
-                    return updatedProfiles;
-                }
-                return prevProfiles;
-            });
-
-        } catch (error) {
-            console.error("Error updating Profile:", error);
-        }
-    }
- 
-   const getAllProfiles = async () => {
-        try {
-            const userId = getUserIdFromCookie();
-
-            const { data } = await axios.get("http://localhost:3000/user/getUserByUserId",{
+            const { data } = await axios.get('http://localhost:3000/user/getUserByUserId', {
                 params: {
-                    userId: userId,
-                }
+                    userId: instructorId,
+                },
+            });
+            console.log(data.response);
+            setData(data.response);
+            setFormData({
+                firstName: data.response.firstName,
+                lastName: data.response.lastName,
+                email: data.response.email,
+                role: data.response.role,
+                cohort: data.response.cohort,
+                stack: data.response.stack,
+            });
+            setLoading(false);
+        } catch (error) {
+            console.error('Error approving request:', error);
+            alert('Failed to approve request. Please try again.');
+        }
+    };
+
+    const handleChange = (field, value) => {
+        setFormData((prevData) => ({ ...prevData, [field]: value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            setIsUpdating(true); // Set loading state to true during update
+            await update(formData);
+            getUserById(); // Optionally, you can fetch the updated data after the update API call
+            alert('Profile updated successfully!');
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            alert('Failed to update profile. Please try again.');
+        } finally {
+            setIsUpdating(false); // Set loading state back to false after update (success or failure)
+        }
+    };
+
+    const update = async (body) => {
+        try {
+            const { data } = await axios.put('http://localhost:3000/user/updateProfile', {
+                userId:instructorId,
+                firstName: body.firstName,
+                lastName: body.lastName,
+                email: body.email,
+                role: body.role,
+                cohort: body.cohort ? body.cohort.value : null,
+                stack: body.stack ? body.stack.value : null,
             });
 
-            
-            if (data.response) {
-                setProfiles(data.response);
-            }
+            console.log('this is body', body);
+            console.log("res",data);
+            setData(data.response);
+            setLoading(false);
         } catch (error) {
-            console.error("Error fetching Profiles:", error);
-        }
-    };
-    const blockUser = async (Profile) => {
-        try {
-           const {data}= await axios.post("http://localhost:3000/user/blockUser", { userId: Profile });
-            console.log(data.response)
-        } catch (error) {
-            console.error("Error approving request:", error);
-            alert("Failed to approve request. Please try again.");
+            console.error('Error updating profile:', error);
+            alert('Failed to update profile. Please try again.');
         }
     };
 
-
-    const handleBlockClick = (Profile) => {
-        setSelectedProfileId(Profile.userId);
-        setModalOpen(true);
-        setDimmed(true);
-    };
-    
     useEffect(() => {
-        
-        void getAllProfiles();
-    }, []);
+        getUserById();
+    }, []); // Include getUserById in the dependency array
 
+    return (
+        <div className="app">
+            {loading ? <div className="flex ps-48 items-center justify-center h-screen">
+                <div className="w-16 h-16  border-4 border-dashed rounded-full animate-spin border-violet-400"></div>
+            </div>
+                : (
+                <div className="data-container fade-in">
+                    <div className={`className="h-screen w-screen flex justify-center items-center  ${showNotification ? ' blurrr' : ' '}`}>
 
-  return (
-    <>
-        <div className="w-full h-full text-indigo-700 p-4 pt-12 bg-opacity-50 bg-indigo-200">
-            
-                    <nav className="text-purple-700 w-full  dark:text-purple-700">
-                        <ol className="text-purple-700 mt-6 flex h-8 space-x-2 dark:text-purple-700">
-                            <li className="text-purple-700 flex items-center">
-                                <a rel="noopener noreferrer" href="#" title="Back to homepage" className="text-purple-700 text-sm hover:text-black flex items-center hover:underline">Instructor</a>
-                            </li>
-                            <li className="flex items-center space-x-1">
-                                <span className="dark:text-gray-400">/</span>
-                                <a rel="noopener noreferrer" href="#" className="text-purple-700 text-sm hover:text-black flex items-center px-1 capitalize hover:underline">Profiles</a>
-                            </li>
-                        </ol>
-                        <h3 className="font-bold text-3xl ">Profiles</h3>
+                        <div className="h-screen w-screen flex justify-end ">
+                            <div className=" px-3 ps-5 w-10/12 h-5/6">
+                                <nav aria-label="breadcrumb" className="text-black w-full p-4 dark:bg-gray-800 dark:text-gray-100">
+                                    <ol className="text-black mt-6 flex h-8 space-x-2 dark:text-gray-100">
+                                        <li className="text-black flex items-center">
+                                            <a rel="noopener noreferrer" href="#" title="Back to homepage" className="text-black text-sm hover:text-black flex items-center hover:underline">Instructor</a>
+                                        </li>
+                                        <li className="flex items-center space-x-1">
+                                            <span className="dark:text-gray-400">/</span>
+                                            <a rel="noopener noreferrer" href="#" className="text-black text-sm hover:text-black flex items-center px-1 capitalize hover:underline">Profile</a>
+                                        </li>
 
-                    </nav>
-                    <div className="container p-2 mx-auto sm:p-4 text-black ">
-                        <div className="overflow-x-auto w-full  ">
-                            <div className="bg-white max-w-2xl shadow overflow-hidden sm:rounded-lg">
-                            <div className="border-t border-gray-200">
-                            <dl>
-                                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">
-                                        Full name
-                                    </dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <p>{Profiles.firstName + ' ' + Profiles.lastName}</p>
-                                    </dd>
+                                    </ol>
+                                    <h3 className="font-bold text-2xl">Profile</h3>
+
+                                </nav>
+                                <div className="container p-2 mx-auto sm:p-4 text-black ">
+                                    <section className="px-6 -ms-5 ">
+                                        <form noValidate="" onSubmit={handleSubmit} className="container flex flex-col mx-auto space-y-12">
+                                            <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900  bg-white">
+                                                <div className="space-y-2 col-span-full lg:col-span-1">
+                                                    <p className="font-medium">Personal Information</p>
+                                                    <p className="text-xs">Here you can view and update your personal information.</p>
+                                                </div>
+                                                <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+                                                    <div className="col-span-full sm:col-span-3">
+                                                        <label for="firstname" className="text-sm">First name</label>
+                                                        <input
+                                                            id="firstname"
+                                                            defaultValue={data.firstName}
+                                                            onChange={(e) => handleChange('firstName', e.target.value)}
+                                                            type="text"
+                                                            placeholder="First name"
+                                                            className="w-full rounded-md focus:outline-none bg-gray-100 p-2 dark:border-gray-700 dark:text-gray-900"
+                                                        />
+
+                                                    </div>
+                                                    <div className="col-span-full sm:col-span-3">
+                                                        <label for="lastname" className="text-sm">Last name</label>
+                                                        <input id="lastname"
+                                                            defaultValue={data.lastName}
+                                                            onChange={(e) => handleChange('lastName', e.target.value)}
+
+                                                            type="text" placeholder="Last name" className="w-full rounded-md focus:outline-none   bg-gray-100 p-2  dark:border-gray-700 dark:text-gray-900" />
+                                                    </div>
+                                                    <div className="col-span-full sm:col-span-3">
+                                                        <label for="email" className="text-sm">Email</label>
+                                                        <input id="email"
+                                                            defaultValue={data.email}
+                                                            disabled
+                                                            type="email" placeholder="Email" className="w-full rounded-md focus:outline-none   bg-gray-100 p-2  dark:border-gray-700 dark:text-gray-900" />
+                                                    </div>
+                                                    <div className="col-span-full">
+                                                        <label for="address" className="text-sm">Role</label>
+                                                        <input
+                                                            defaultValue={data.role}
+                                                            disabled
+                                                            id="address" type="text" placeholder="" className="w-full rounded-md focus:outline-none   bg-gray-100 p-2  dark:border-gray-700 dark:text-gray-900" />
+                                                    </div>
+                                                    <div className="col-span-full sm:col-span-2">
+                                                        <label for="cohort" className="text-sm">Cohort</label>
+                                                        <Select
+                                                            className="bg-gray-50 rounded-lg mb-2 focus:outline-none text-black text-sm"
+                                                            defaultValue={{ value: data.cohort, label: data.cohort }}
+                                                            isSearchable={true}
+                                                            options={COHORT}
+                                                            onChange={(selectedOption) => handleChange('cohort', selectedOption)}
+                                                            isDisabled={false}
+                                                            placeholder="Select Cohort"
+                                                        />
+
+                                                    </div>
+                                                    <div className="col-span-full sm:col-span-2">
+                                                        <label for="stack" className="text-sm">Stack</label>
+                                                        <Select
+                                                            className="bg-gray-50  rounded-lg mb-2 focus:outline-none text-black text-sm"
+                                                            defaultValue={{ value: data.stack, label: data.stack }} // Assuming data.stack is the stack value
+                                                            onChange={(selectedOption) => handleChange('stack', selectedOption)}
+
+                                                            isSearchable={true}
+                                                            options={STACK}
+
+                                                            isDisabled={false}
+                                                            placeholder="Select Stack"
+                                                        />      </div>
+
+                                                    <br /><br />
+                                                    <div className='flex mt-20 justify-end items-end w-full'>
+                                                        <button
+                                                            type="submit"
+                                                            className={`w-full rounded-md bg-indigo-500 text-white shadow-sm ${isUpdating ? 'cursor-not-allowed opacity-50' : ''
+                                                                }`}
+                                                            disabled={isUpdating}
+                                                        >
+                                                            {isUpdating ? 'Updating...' : 'Update'}
+                                                        </button>                                                    </div>
+                                                </div>
+
+                                            </fieldset>
+                                        </form>
+                                    </section>
+
                                 </div>
-                                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">
-                                        User Id
-                                    </dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <p>{Profiles.userId}</p>
-                                    </dd>
-                                </div>
-                                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">
-                                        Email address
-                                    </dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <p>{Profiles.email}</p>
-                                    </dd>
-                                </div>
-                                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">
-                                        Role
-                                    </dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <p>{Profiles.role}</p>
-                                    </dd>
-                                </div>
-                                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">
-                                        About
-                                    </dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" style={{ textAlign: 'left', textJustify: 'inter-word' }}>
-                                        Instructors play a crucial role in guiding aspiring developers through the intricacies of web development. Specializing in React, they emphasize component-based architecture and declarative syntax to enable the creation of dynamic and responsive web applications. Through hands-on exercises, they empower learners to navigate real-world challenges. Overall, React instructors not only impart technical skills but also foster a creative mindset essential for success in the dynamic field of web development.
-                                    </dd>
-                                    </div>
-                            </dl>                    
-                
-                    </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            
 
+                    </div>
+                    {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+                </div>
+            )}
         </div>
-    </>
-  );
+    );
 }
 
-export default Profile
+export default Profile;

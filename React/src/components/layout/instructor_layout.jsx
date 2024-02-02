@@ -25,7 +25,7 @@ const Instructor_layout = () => {
 
   return (
     <div>
-        <div className=" w-screen h-screen flex flex-col bg-[#efebea]">
+        <div className=" w-screen h-screen flex flex-col bg-white">
           <div>
           <Navbar updateState={updateState} toggleSidebar={toggleSidebar} />
           </div>
@@ -35,12 +35,11 @@ const Instructor_layout = () => {
             </div>
             <div className="h-full w-4/5">
             {component === "HOME" && <Home sidebarOpen={sidebarOpen} />}
-            {component === "PROFILE" && <Profile/> }
+            {/* {component === "PROFILE" && <Profile/> } */}
             {component === "TEAMS" && <Teams />}
             {component === "TRAINEES" && <Trainees/>}
             {component === "TASKS" && <Tasks />}
             {component === "PROJECTS" && <Projects />}
-            {component === "REPORTS" && <Reports />}
             {component === "REQUEST" && <Request/>}
             </div>
             </div>
@@ -50,19 +49,3 @@ const Instructor_layout = () => {
 }
 
 export default Instructor_layout;
-
-
-// <div className=" w-screen h-screen flex flex-col bg-[#efebea]">
-//           <Navbar updateState={updateState} toggleSidebar={toggleSidebar} />
-//           <div className="w-full h-full  bg-red-700">
-//             <Sidebar updateState={updateState} />
-//             {component === "HOME" && <Home sidebarOpen={sidebarOpen} />}
-//             {component === "PROFILE" && <Profile/> }
-//             {component === "TEAMS" && <Teams />}
-//             {component === "TRAINEES" && <Trainees/>}
-//             {component === "TASKS" && <Tasks />}
-//             {component === "PROJECTS" && <Projects />}
-//             {component === "REPORTS" && <Reports />}
-//             {component === "REQUEST" && <Request/>}
-//           </div>
-//         </div>
